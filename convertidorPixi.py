@@ -77,20 +77,20 @@ def derretir_la_memoria(la_foto_que_no_borro, columnas_que_imagino, filas_que_im
     return np.asarray(recuerdo_chiquito)
 
 
-def volver_a_agrandarlo(los_cuadritos, tamano_de_cada_suspiro, con_rejas=False,
+def volver_a_agrandarlo(los_cuadritos, tamano_de_cada_cuadrito, con_rejas=False,
                         color_de_las_rejas=(0, 0, 0)):
     """Escala el arreglo para que cada bloque mida tamano x tamano px."""
     filas_que_imagino, columnas_que_imagino, _ = los_cuadritos.shape
     recuerdo_enorme = Image.fromarray(los_cuadritos).resize(
-        (columnas_que_imagino * tamano_de_cada_suspiro, filas_que_imagino * tamano_de_cada_suspiro),
+        (columnas_que_imagino * tamano_de_cada_cuadrito, filas_que_imagino * tamano_de_cada_cuadrito),
         Image.Resampling.NEAREST)
-    if con_rejas and tamano_de_cada_suspiro > 2:
+    if con_rejas and tamano_de_cada_cuadrito > 2:
         lapiz = ImageDraw.Draw(recuerdo_enorme)
         for cada_columna in range(columnas_que_imagino + 1):
-            x = cada_columna * tamano_de_cada_suspiro
+            x = cada_columna * tamano_de_cada_cuadrito
             lapiz.line([(x, 0), (x, recuerdo_enorme.height)], fill=color_de_las_rejas)
         for cada_fila in range(filas_que_imagino + 1):
-            y = cada_fila * tamano_de_cada_suspiro
+            y = cada_fila * tamano_de_cada_cuadrito
             lapiz.line([(0, y), (recuerdo_enorme.width, y)], fill=color_de_las_rejas)
     return recuerdo_enorme
 
@@ -129,9 +129,9 @@ def y_entonces_me_acorde():
     los_cuadritos = derretir_la_memoria(la_foto_que_no_borro, columnas_que_imagino,
                                         filas_que_imagino, respuestas.colores, respuestas.metodo)
 
-    tamano_de_cada_suspiro = respuestas.tamano_bloque or max(
+    tamano_de_cada_cuadrito = respuestas.tamano_bloque or max(
         1, round(la_foto_que_no_borro.width / columnas_que_imagino))
-    recuerdo_enorme = volver_a_agrandarlo(los_cuadritos, tamano_de_cada_suspiro, respuestas.rejilla)
+    recuerdo_enorme = volver_a_agrandarlo(los_cuadritos, tamano_de_cada_cuadrito, respuestas.rejilla)
     adonde_se_va = respuestas.salida or f"{Path(respuestas.entrada).stem}_pixelado.png"
     recuerdo_enorme.save(adonde_se_va)
 
